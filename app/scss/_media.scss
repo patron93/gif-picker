@@ -1,0 +1,101 @@
+@import "vars";
+
+/*==========  Desktop First  ==========*/
+
+/* Large Devices, Wide Screens */
+@media only screen and (max-width: 1200px) {
+  .btn-top {
+    width: 100%;
+    padding: 20px;
+    margin: 0;
+    color: $accent;
+    background-color: #fff;
+    text-align: center;
+    line-height: 0.2em;
+    border-radius: 0;
+    &:hover {
+      background-color: $accent;
+      color: #fff;
+    }
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+  .show-more {
+
+    text-align: center;
+    padding-top: 10px;
+  }
+  .most-popular {
+    text-align: center;
+  }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width: 768px) {
+
+  
+  .close {
+    margin-top: 25px;
+    right: 0;
+
+  }
+  .line {
+    margin-bottom: 60px;
+  }
+  #page {
+    .col-md-9 {
+      text-align: center;
+    }
+
+  }
+}
+
+
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 480px) {
+  .close {
+    margin-top: 15px;
+    right: 50%;
+    margin-right: -10px;
+
+  }
+  header {
+    font-size: 0.8em;
+    height: 45px;
+  }
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (max-width: 320px) {
+  /**/
+}
+
+/*==========  Mobile First  ==========*/
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+  /**/
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 480px) {
+  /**/
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+  /**/
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  /**/
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+  /**/
+}

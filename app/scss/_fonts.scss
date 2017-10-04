@@ -1,0 +1,8 @@
+@import "_mixins/font-face";
+
+@include font-face("raleway", "../fonts/RalewayRegular/RalewayRegular");
+@include font-face("raleway", "../fonts/RalewayLight/RalewayLight", 200);
+@include font-face("raleway", "../fonts/RalewayBold/RalewayBold", bold);
+@include font-face("raleway", "../fonts/RalewaySemiBold/RalewaySemiBold", 500);
+@include font-face("fontawesome", "../fonts/font-awesome/fontawesome-webfont");
+
