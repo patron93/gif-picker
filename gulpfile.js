@@ -11,17 +11,18 @@ var gulp = require('gulp'),
     cache = require('gulp-cache'),
     autoprefixer = require('gulp-autoprefixer'),
     ftp = require('vinyl-ftp'),
-    notify = require("gulp-notify");
+    notify = require('gulp-notify'),
+    rigger = require('gulp-rigger');
 
 
 
 //scripts
 gulp.task('main-js', function () {
     return gulp.src([
-
         'app/js/main.js',
 
     ])
+        .pipe(rigger())
         .pipe(concat('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('app/js'))
@@ -71,7 +72,7 @@ gulp.task('scss', function () {
 
 gulp.task('watch', ['scss', 'main-js', 'libs-js', 'browser-sync'], function () {
     gulp.watch('app/scss/**/*.scss', ['scss']);
-    gulp.watch(['libs/**/*.js', 'app/js/gif.js', 'app/js/main.js'], ['libs-js', 'main-js']);
+    gulp.watch(['libs/**/*.js', 'app/js/gif.js', 'app/js/main.js', 'app/js/partials/*js'], ['libs-js', 'main-js']);
     gulp.watch('app/*.html', browserSync.reload);
 });
 

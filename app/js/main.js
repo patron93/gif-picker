@@ -1,264 +1,169 @@
 $(function () {
 
-    var $container = $('.start'),
-        $page = $('#page');
+    var $container = $('.start-js'),
+        $page = $('.page-js');
 
-    var options = {
-        amountStartItems: 20,
-        amountLoadedItem: 20,
-        amountPopularTags: 25
-    };
+    //= partials/GP-options.js
 
+    //= partials/GP-lazy.js
 
-    var lazy = {
+    //= partials/GP-search.js
 
-        count: options.amountStartItems,
-        gifCol: gifObj.items,
+    //= partials/GP-tags.js
 
-        loadContent: function (amountPush) {
-
-            var heightWindow = $(document).height(),
-                botPosition = $('.position').offset().top;
-
-            var rest = this.amountItem - this.count;
-
-            if (botPosition >= (heightWindow - 100) && (this.count + amountPush) <= this.amountItem) {
-
-                content.pushContainer(this.count, amountPush, this.gifCol);
-                this.count += amountPush;
-            }
-            else if (botPosition >= (heightWindow - 100) && rest < amountPush) {
-                content.pushContainer(this.count, rest, this.gifCol);
-                this.count += rest;
-            }
-        }
+    //= partials/GP-content.js
 
 
-    };
-
-    var search = {
-
-        result: [],
-
-        searchItems: function (tag) {
-
-            for (var i = 0; i < gifObj.items.length; i++) {
-                var resultArr = gifObj.items[i].keys;
-
-                if (~resultArr.indexOf(tag)) {
-                    this.result.push(gifObj.items[i]);
-                }
-            }
-            return this.result
+    var initGifPicker = {
+        init: function () {
+            this._addElements();
+            this._startItems();
+            this._clickEvents();
+            this._scrollEvents();
         },
 
-        showResult: function (tag) {
+        _startItems: function () {
+            content.pushContainer(0, options.amountStartItems, gifObj.items);
+        },
 
-            this.result = [];
-            this.searchItems(tag);
-            $container.find('img').attr('src', ' ');
-            $container.children().remove();
+        _addElements: function () {
+            $('body').prepend('<div class="done done-top done-js done-top-js">' +
+                '</div><div class="done done-bot done-js done-bot-js"></div>' +
+                '<div class="position position-js"></div>');
 
-            if (this.result.length <= options.amountStartItems) {
-                content.pushContainer(0, this.result.length, this.result);
+            $('.most-popular-js').append(tags.mostPopular());
 
-            } else {
-                content.pushContainer(0, options.amountStartItems, this.result);
-            }
+            $('.hash-js').append(tags.allTags());
 
-            lazy.gifCol = this.result;
-            lazy.count = options.amountStartItems;
 
-        }
-    };
+        },
 
-    var tags = {
+        _clickEvents: function () {
+            $page.on('click', 'li', function (event) {
+                var POSITION_HASH_CHAR = 1,
+                    str = $(this).text().slice(POSITION_HASH_CHAR);
 
-        tagsArr: [],
-
-        sortTags: function () {
-
-            var tagsObj = {};
-            for (var i = 0; i < gifObj.items.length; i++) {
-
-                for (var j = 0; j < gifObj.items[i].keys.length; j++) {
-                    var tag = gifObj.items[i].keys[j];
-                    tagsObj[tag] ? tagsObj[tag] += 1 : tagsObj[tag] = 1;
-                }
-            }
-            for (var key in tagsObj) {
-                this.tagsArr.push({name: key, value: tagsObj[key]})
-            }
-
-            this.tagsArr.sort(function (a, b) {
-                return b.value - a.value;
+                search.showResult(str);
+                $('.close-js').show();
+                event.stopPropagation()
             });
-            return this.tagsArr;
+
+            $page.on('click', '.thumb-js', function () {
+
+                var PROGRESS_COPY_ANIMATION_IN = 100,
+                    PROGRESS_COPY_ANIMATION_DUR = 200,
+                    PROGRESS_COPY_ANIMATION_OUT = 500,
+                    LENGTH_OLD_SUFFIX = 2,
+                    suffix = 'orig',
+                    src = $(this).find('img').attr('src'),
+                    newSrc = src.slice(0, src.length - LENGTH_OLD_SUFFIX) + suffix;
+
+
+                window.getSelection().removeAllRanges();
+
+
+                $container.append('<p class="select">' + newSrc + '</p>');
+
+
+                try {
+                    var emailLink = document.querySelector('.select'),
+                        range = document.createRange();
+
+                    range.selectNode(emailLink);
+                    window.getSelection().addRange(range);
+                    document.execCommand('copy');
+                    window.getSelection().removeAllRanges();
+
+                    $('.select').remove();
+
+                    $('.done-js')
+                        .removeClass('done-error')
+                        .addClass('done-successful')
+                        .fadeIn(PROGRESS_COPY_ANIMATION_IN);
+
+                    setTimeout(function () {
+                        $('.done-js').fadeOut(PROGRESS_COPY_ANIMATION_OUT);
+                    }, PROGRESS_COPY_ANIMATION_DUR);
+
+                } catch (err) {
+
+                    $('.done-js')
+                        .removeClass('done-successful')
+                        .addClass('done-error')
+                        .fadeIn(PROGRESS_COPY_ANIMATION_IN);
+
+                    setTimeout(function () {
+                        $('.done-js').fadeOut(PROGRESS_COPY_ANIMATION_OUT);
+                    }, PROGRESS_COPY_ANIMATION_DUR);
+                }
+
+            });
+
+            $('.show-more-js').on('click', function () {
+
+                var $icon = $(this).find('i');
+
+                if ($icon.hasClass('fa-chevron-up')) {
+                    $('.all-tags-js').slideUp();
+
+                    $icon
+                        .toggleClass('fa-chevron-up')
+                        .toggleClass('fa-chevron-down');
+
+                    $('.most-popular-js').empty().append(tags.mostPopular());
+
+                } else {
+
+                    $('.all-tags-js').slideDown();
+                    $('.most-popular-js').empty().append('<h3>all tags</h3>');
+
+                    $icon
+                        .toggleClass('fa-chevron-up')
+                        .toggleClass('fa-chevron-down');
+                }
+
+            });
+
+            $('.close-js').on('click', function () {
+
+                $('.start-js').empty();
+                lazy.gifCol = gifObj.items;
+
+                lazy.count = 0;
+                lazy.loadContent(options.amountLoadedItem);
+
+                $('.close-js').hide();
+
+            });
+
+            $('.btn-top-js').on('click', function () {
+                var SCROLL_ANIMATE_DURATION = 500;
+
+                $('html').animate({
+                    scrollTop: 0
+                }, SCROLL_ANIMATE_DURATION)
+            });
         },
 
-        allTags: function () {
+        _scrollEvents: function () {
+            $(window).on('scroll', function () {
 
-            $('.hash').append('<div class="container-fluid"><div class="row"><ul class="all-tags">' +
-                '</ul></div></div>');
-            var $ul = $('.all-tags');
-            for (var i = 0; i < this.tagsArr.length; i++) {
-                $ul.append('<li>#' + this.tagsArr[i].name + '</li>')
-            }
-        },
+                var DISTANCE_SCROLL_SHOW_BUTTON = 200,
+                    DURATION_ANIMATE_BUTTON = 200;
 
-        mostPopular: function () {
+                lazy.loadContent(options.amountLoadedItem);
 
-            $('.most-popular').append('<div class="popular"></div>');
-            var $ul = $('.popular'),
-                widthTagsPanel = $ul.width(),
-                widthTags = 0;
+                if ($(window).scrollTop() >= DISTANCE_SCROLL_SHOW_BUTTON) {
+                    $('.btn-top-js').fadeIn(DURATION_ANIMATE_BUTTON)
+                } else {
+                    $('.btn-top-js').fadeOut(DURATION_ANIMATE_BUTTON)
+                }
 
-            for (var i = 0; i < options.amountPopularTags; i++) {
-                if (widthTags > (widthTagsPanel - 100)) break;
-                $ul.append('<li>#' + this.tagsArr[i].name + '</li>');
-                widthTags += ($ul.find('li').eq(i).outerWidth(true) + 5);
-
-            }
+            });
         }
     };
 
-    var content = {
+    initGifPicker.init();
 
-        createItem: function (src, tags) {
-            $container.append('<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 ">' +
-                '<div class="thumb">' +
-                '<img src="' + src + '">\n' +
-                '   <ul class="tags">\n' +
-                '       <li>' + (tags[0] ? '#' + tags[0] : "") + '</li>\n' +
-                '       <li>' + (tags[1] ? '#' + tags[1] : "") + '</li>\n' +
-                '       <li>' + (tags[2] ? '#' + tags[2] : "") + '</li>\n' +
-                '       <li>' + (tags[3] ? '#' + tags[3] : "") + '</li>\n' +
-                '       <li>' + (tags[4] ? '#' + tags[4] : "") + '</li>\n' +
-                '  </ul></div></div>')
-        },
-
-        pushContainer: function (startPos, amountItems, gifArray) {
-            for (var i = startPos; i < (startPos + amountItems); i++) {
-                this.createItem(gifArray[i].src, gifArray[i].keys)
-            }
-        }
-
-    };
-
-    Object.defineProperty(lazy, 'amountItem', {
-        get: function () {
-            return this.gifCol.length
-        }
-    });
-
-    content.pushContainer(0, options.amountStartItems, gifObj.items);
-
-    tags.sortTags();
-
-
-    $('body').prepend('<div class="done done-top"></div><div class="done done-bot"></div><div class="position"></div>');
-
-    $('.most-popular').append(tags.mostPopular());
-
-    $('.hash').append(tags.allTags());
-
-    $page.on('click', 'li', function (event) {
-
-        var str = $(this).text().slice(1);
-
-        search.showResult(str);
-        $('.close').show();
-        event.stopPropagation()
-    });
-
-    $('.close').on('click', function () {
-
-        $('.start').children().remove();
-        lazy.gifCol = gifObj.items;
-
-        lazy.count = 0;
-        lazy.loadContent(options.amountLoadedItem);
-
-        $('.close').hide();
-
-    });
-
-    $page.on('click', '.thumb', function () {
-
-        window.getSelection().removeAllRanges();
-
-        var suffix = 'orig',
-            src = $(this).find('img').attr('src'),
-            newSrc = src.slice(0, src.length - 2) + suffix;
-        $container.append('<p class="select">' + newSrc + '</p>');
-
-
-        try {
-            var emailLink = document.querySelector('.select');
-            var range = document.createRange();
-            range.selectNode(emailLink);
-            window.getSelection().addRange(range);
-            document.execCommand('copy');
-            window.getSelection().removeAllRanges();
-
-            $('.select').remove();
-
-            $('.done').removeClass('done-error').addClass('done-successful').fadeIn(100);
-
-            setTimeout(function () {
-                $('.done').fadeOut(500);
-            }, 200);
-
-        } catch (err) {
-
-            $('.done').removeClass('done-successful').addClass('done-error').fadeIn(40);
-
-            setTimeout(function () {
-                $('.done').fadeOut(400);
-            }, 130);
-        }
-
-    });
-
-    $('.show-more').on('click', function () {
-
-        var $icon = $(this).find('i');
-
-        if ($icon.hasClass('fa-chevron-up')) {
-            $('.all-tags').slideUp();
-
-            $icon.toggleClass('fa-chevron-up');
-            $icon.toggleClass('fa-chevron-down');
-
-            $('.most-popular').empty().append(tags.mostPopular());
-
-        } else {
-
-            $('.all-tags').slideDown();
-
-            $('.most-popular').empty().append('<h3>all tags</h3>');
-
-            $icon.toggleClass('fa-chevron-up');
-            $icon.toggleClass('fa-chevron-down');
-        }
-
-    });
-
-    $('.btn-top').on('click', function () {
-        $('html').animate({
-            scrollTop: 0
-        }, 500)
-    });
-
-    $(window).on('scroll', function () {
-        lazy.loadContent(options.amountLoadedItem);
-
-        if ($(window).scrollTop() >= 200) {
-            $('.btn-top').fadeIn(200)
-        } else {
-            $('.btn-top').fadeOut(200)
-        }
-
-    })
 
 });

@@ -1587,7 +1587,7 @@ var gifObj = {
         }, {
             src: "https://img-fotki.yandex.ru/get/233044/227926326.7/0_199e80_11d30ed4_XS",
             yandexPage: 19,
-            keys: ['mr-baen', 'hi']
+            keys: ['mr-bean', 'hi']
         }, {
             src: "https://img-fotki.yandex.ru/get/249479/227926326.8/0_199e81_53f72e8a_XS",
             yandexPage: 19,
