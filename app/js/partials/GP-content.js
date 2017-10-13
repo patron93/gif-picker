@@ -8,16 +8,16 @@ var content = (function () {
             li;
 
         col = document.createElement('div');
-        col.className = 'col-xl-2 col-lg-3 col-md-4 col-sm-6';
+        col.classList.add('col-xl-2', 'col-lg-3', 'col-md-4', 'col-sm-6');
 
         thumb = document.createElement('div');
-        thumb.className = 'thumb thumb-js';
+        thumb.classList.add('thumb', 'thumb-js');
 
         img = document.createElement('img');
         img.src = src;
 
         ul = document.createElement('ul');
-        ul.className = 'tags tags-js';
+        ul.classList.add('tags', 'tags-js');
 
         $.each(tags, function (i, val) {
             li = document.createElement('li');
@@ -30,6 +30,7 @@ var content = (function () {
         col.appendChild(thumb);
 
         $container.append(col);
+
     }
 
     return {

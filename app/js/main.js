@@ -20,6 +20,7 @@ $(function () {
             this._startItems();
             this._clickEvents();
             this._scrollEvents();
+
         },
 
         _startItems: function () {
@@ -33,6 +34,7 @@ $(function () {
 
             $('.most-popular-js').append(tags.mostPopular());
 
+
             $('.hash-js').append(tags.allTags());
 
 
@@ -44,7 +46,7 @@ $(function () {
                     str = $(this).text().slice(POSITION_HASH_CHAR);
 
                 search.showResult(str);
-                $('.close-js').show();
+                $('.search-state-js').show().find('.search-tag-js').text('#'+str);
                 event.stopPropagation()
             });
 
@@ -101,25 +103,23 @@ $(function () {
 
             $('.show-more-js').on('click', function () {
 
-                var $icon = $(this).find('i');
 
-                if ($icon.hasClass('fa-chevron-up')) {
+
+                if ($(this).data('opened') === 'on') {
+
+                    $(this).data('opened', 'off');
                     $('.all-tags-js').slideUp();
-
-                    $icon
-                        .toggleClass('fa-chevron-up')
-                        .toggleClass('fa-chevron-down');
+                    $(this).find('span').text('show more tags');
 
                     $('.most-popular-js').empty().append(tags.mostPopular());
 
                 } else {
 
                     $('.all-tags-js').slideDown();
-                    $('.most-popular-js').empty().append('<h3>all tags</h3>');
+                    $('.most-popular-js').empty().append('<h4>all tags</h4>');
+                    $(this).find('span').text('show less tags');
 
-                    $icon
-                        .toggleClass('fa-chevron-up')
-                        .toggleClass('fa-chevron-down');
+                    $(this).data('opened', 'on');
                 }
 
             });
@@ -132,7 +132,7 @@ $(function () {
                 lazy.count = 0;
                 lazy.loadContent(options.amountLoadedItem);
 
-                $('.close-js').hide();
+                $('.search-state-js').hide();
 
             });
 
@@ -161,6 +161,7 @@ $(function () {
 
             });
         }
+
     };
 
     initGifPicker.init();

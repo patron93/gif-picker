@@ -1,5 +1,5 @@
 var options = {
     amountStartItems: 20,
     amountLoadedItem: 20,
-    amountPopularTags: 25
+    amountPopularTags: 20
 };

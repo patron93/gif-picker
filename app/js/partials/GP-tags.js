@@ -29,12 +29,15 @@ var tags = (function () {
             var $ul,
                 i;
 
-            $('.hash-js').append('<div class="container-fluid"><div class="row"><ul class="all-tags all-tags-js">' +
+            $('.hash-js').append('<div class="container-fluid"><div class="row">' +
+                '<ul class="all-tags all-tags-js">' +
                 '</ul></div></div>');
             $ul = $('.all-tags-js');
+
             for (i = 0; i < tagsArr.length; i++) {
                 $ul.append('<li>#' + tagsArr[i].name + '</li>')
             }
+
         },
 
         mostPopular: function () {
@@ -49,10 +52,12 @@ var tags = (function () {
             widthTags = 0;
 
             for (i = 0; i < options.amountPopularTags; i++) {
-                if (widthTags > (widthTagsPanel - 100)) break;
+                if (widthTags > (widthTagsPanel)) break;
                 $ul.append('<li>#' + tagsArr[i].name + '</li>');
-                widthTags += ($ul.find('li').eq(i).outerWidth(true) + 5);
+                widthTags += ($ul.find('li').eq(i).outerWidth(true));
             }
+            $ul.find('li').last().remove();
+            $ul.find('li').last().remove();
 
         }
 

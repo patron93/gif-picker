@@ -5577,7 +5577,7 @@ html {
   background-color: #e7e7e7; }
 
 html, body {
-  height: 100%; }
+  height: 101vh; }
 
 body {
   font-size: 16px;
@@ -5635,49 +5635,79 @@ header {
   color: rgba(226, 39, 20, 0.91);
   box-shadow: 0 0 15px 12px #e22714; }
 
-.line {
-  width: 100%;
-  border-bottom: 1px solid rgba(139, 139, 139, 0.46);
-  margin-bottom: 60px;
-  margin-top: 10px;
-  position: relative; }
-
 .start {
   padding-bottom: 40px; }
 
-.close {
+.search-state {
+  background-color: #f9f9f9;
   display: none;
-  position: absolute;
-  font-style: normal;
-  font-size: 25px;
-  color: #2194e7;
-  font-weight: 100;
-  transition: all ease .4s;
-  right: 0;
-  margin-top: 20px;
-  line-height: 30px;
-  animation: zoomIn .4s; }
-  .close::after {
-    font-family: fontawesome, sans-serif;
-    content: '\f00d'; }
-  .close:hover {
-    color: #3dbdff;
-    text-shadow: 0 0 7px rgba(33, 148, 231, 0.61); }
-
-.show-more {
-  display: block;
   text-align: right;
-  padding-right: 10px;
-  cursor: pointer;
-  line-height: 1.3em;
-  font-size: 1.3em;
-  margin: 0; }
-  .show-more .fa {
+  margin-right: 15px;
+  margin-left: 15px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  padding: 5px;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+  animation: slideInUp .3s; }
+  .search-state .current-tag {
+    text-align: left;
+    color: #676767;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: .8em;
+    cursor: default;
+    margin: 0; }
+    .search-state .current-tag .search-tag {
+      padding-left: 5px;
+      color: #2194e7;
+      font-size: 1.5em; }
+  .search-state .close {
+    font-style: normal;
+    font-size: 25px;
     color: #2194e7;
-    transition: ease all .4s; }
-    .show-more .fa:hover {
+    font-weight: 100;
+    transition: all ease .4s;
+    margin-top: 20px;
+    line-height: 34px;
+    animation: zoomIn .4s; }
+    .search-state .close::after {
+      font-family: fontawesome, sans-serif;
+      content: '\f00d'; }
+    .search-state .close:hover {
       color: #3dbdff;
       text-shadow: 0 0 7px rgba(33, 148, 231, 0.61); }
+
+.show-more {
+  position: relative;
+  margin: 30px 0; }
+  .show-more p {
+    white-space: nowrap;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    line-height: 1.3em;
+    font-size: .9em;
+    text-transform: uppercase;
+    color: #778088;
+    font-weight: 500;
+    transition: .3s ease; }
+    .show-more p:hover {
+      color: #3dbdff;
+      text-shadow: 0 0 7px rgba(33, 148, 231, 0.31); }
+      .show-more p:hover span::after, .show-more p:hover span::before {
+        background-color: #3dbdff;
+        box-shadow: 0 0 7px rgba(33, 148, 231, 0.61); }
+    .show-more p span::after, .show-more p span::before {
+      content: '';
+      height: 1px;
+      width: 32%;
+      position: relative;
+      vertical-align: middle;
+      background-color: rgba(108, 117, 125, 0.45);
+      display: inline-block;
+      margin: 0 10px;
+      transition: all ease .3s; }
 
 .select {
   font-size: 1px;
@@ -5691,7 +5721,8 @@ header {
       margin: 0;
       padding: 0;
       font-size: 0;
-      list-style: none; }
+      list-style: none;
+      text-align: center; }
     .page .hash .most-popular .popular li {
       font-weight: 500;
       color: #21a5f9;
@@ -5701,32 +5732,41 @@ header {
       cursor: pointer;
       font-size: 15px;
       animation: slideInDown 0.5s; }
+      .page .hash .most-popular .popular li:last-child {
+        padding-right: 0; }
       .page .hash .most-popular .popular li:hover {
         color: #2194e7;
-        text-shadow: 0 0 3px rgba(33, 148, 231, 0.61);
+        text-shadow: 0 0 3px rgba(33, 165, 249, 0.44);
         text-decoration-line: underline; }
-  .page .hash h3 {
-    color: #2194e7;
+  .page .hash h4 {
+    color: #858f97;
+    position: relative;
     margin: 0;
     padding: 0;
-    animation: slideInDown ease 0.3s; }
+    text-transform: uppercase;
+    font-size: 15px;
+    text-align: center;
+    animation: slideInDown ease 0.3s;
+    cursor: default; }
 
 .page ul.all-tags {
   display: none;
-  padding-top: 5px;
-  padding-left: 15px;
-  padding-right: 5px;
+  padding: 20px 15px;
+  margin: 0 15px;
   text-align: center;
   cursor: pointer;
   font-size: 0.8em;
-  width: 100%; }
+  width: 100%;
+  background-color: #f9f9f9;
+  box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3); }
   .page ul.all-tags li {
     padding: 1px 10px;
     margin: 3px 3px;
     display: inline-block;
-    background-color: #fff;
+    background-color: #E7E7E7;
     border: 1px solid rgba(134, 134, 134, 0);
-    transition: all ease .3s; }
+    transition: all ease .3s;
+    color: #575757; }
     .page ul.all-tags li:hover {
       color: #2194e7;
       box-shadow: 0 0 15px 1px rgba(33, 148, 231, 0.61);
@@ -5826,6 +5866,7 @@ header {
 /* Medium Devices, Desktops */
 @media only screen and (max-width: 992px) {
   .show-more {
+    padding: 0;
     text-align: center;
     padding-top: 10px; }
   .most-popular {
@@ -5833,9 +5874,6 @@ header {
 
 /* Small Devices, Tablets */
 @media only screen and (max-width: 768px) {
-  .close {
-    margin-top: 25px;
-    right: 0; }
   .line {
     margin-bottom: 60px; }
   #page .col-md-9 {
@@ -5843,10 +5881,6 @@ header {
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 480px) {
-  .close {
-    margin-top: 15px;
-    right: 50%;
-    margin-right: -10px; }
   .page .hash .most-popular .popular li {
     font-size: 13px; }
   header {
