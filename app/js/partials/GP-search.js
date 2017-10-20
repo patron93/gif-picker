@@ -23,8 +23,8 @@ var search = (function () {
             result = [];
 
             searchItems(tag);
-            $container.find('img').attr('src', ' ');
-            $container.empty();
+
+            content.clearContainer($container);
 
             if (result.length <= options.amountStartItems) {
                 content.pushContainer(0, result.length, result);
@@ -33,8 +33,7 @@ var search = (function () {
                 content.pushContainer(0, options.amountStartItems, result);
             }
 
-            lazy.gifCol = result;
-            lazy.count = options.amountStartItems;
+            lazy.changeContainer(result, options.amountLoadedItem)
         }
 
     }

@@ -3,6 +3,7 @@ $(function () {
     var $container = $('.start-js'),
         $page = $('.page-js');
 
+
     //= partials/GP-options.js
 
     //= partials/GP-lazy.js
@@ -13,13 +14,21 @@ $(function () {
 
     //= partials/GP-content.js
 
+    //= partials/GP-favorites.js
+
+    //= partials/GP-menu.js
+
+    //= partials/GP-collections.js
+
 
     var initGifPicker = {
         init: function () {
             this._addElements();
             this._startItems();
-            this._clickEvents();
+            this._clickPageEvents();
             this._scrollEvents();
+            this._menuEvents();
+
 
         },
 
@@ -28,9 +37,11 @@ $(function () {
         },
 
         _addElements: function () {
-            $('body').prepend('<div class="done done-top done-js done-top-js">' +
-                '</div><div class="done done-bot done-js done-bot-js"></div>' +
-                '<div class="position position-js"></div>');
+            var tpl = '<div class="done done-top done-js done-top-js"></div>' +
+                '<div class="done done-bot done-js done-bot-js"></div>' +
+                '<div class="position position-js"></div>';
+
+            $('body').prepend(tpl);
 
             $('.most-popular-js').append(tags.mostPopular());
 
@@ -40,69 +51,126 @@ $(function () {
 
         },
 
-        _clickEvents: function () {
-            $page.on('click', 'li', function (event) {
+        _clickPageEvents: function () {
+            $page.on('click', '.js-tag-item', function (e) {
+                e.stopPropagation();
+
                 var POSITION_HASH_CHAR = 1,
                     str = $(this).text().slice(POSITION_HASH_CHAR);
 
                 search.showResult(str);
-                $('.search-state-js').show().find('.search-tag-js').text('#'+str);
-                event.stopPropagation()
-            });
 
-            $page.on('click', '.thumb-js', function () {
+                content.changeSearchPanel('#' + str);
 
-                var PROGRESS_COPY_ANIMATION_IN = 100,
-                    PROGRESS_COPY_ANIMATION_DUR = 200,
-                    PROGRESS_COPY_ANIMATION_OUT = 500,
-                    LENGTH_OLD_SUFFIX = 2,
-                    suffix = 'orig',
-                    src = $(this).find('img').attr('src'),
-                    newSrc = src.slice(0, src.length - LENGTH_OLD_SUFFIX) + suffix;
+            })
 
+                .on('click', '.thumb-js', function () {
 
-                window.getSelection().removeAllRanges();
+                    var PROGRESS_COPY_ANIMATION_IN = 100,
+                        PROGRESS_COPY_ANIMATION_DUR = 200,
+                        PROGRESS_COPY_ANIMATION_OUT = 500,
+                        LENGTH_OLD_SUFFIX = 2,
+                        suffix = 'orig',
+                        src = $(this).find('img').attr('src'),
+                        newSrc = src.slice(0, src.length - LENGTH_OLD_SUFFIX) + suffix;
 
 
-                $container.append('<p class="select">' + newSrc + '</p>');
-
-
-                try {
-                    var emailLink = document.querySelector('.select'),
-                        range = document.createRange();
-
-                    range.selectNode(emailLink);
-                    window.getSelection().addRange(range);
-                    document.execCommand('copy');
                     window.getSelection().removeAllRanges();
 
-                    $('.select').remove();
 
-                    $('.done-js')
-                        .removeClass('done-error')
-                        .addClass('done-successful')
-                        .fadeIn(PROGRESS_COPY_ANIMATION_IN);
+                    $container.append('<p class="select">' + newSrc + '</p>');
 
-                    setTimeout(function () {
-                        $('.done-js').fadeOut(PROGRESS_COPY_ANIMATION_OUT);
-                    }, PROGRESS_COPY_ANIMATION_DUR);
 
-                } catch (err) {
+                    try {
+                        var emailLink = document.querySelector('.select'),
+                            range = document.createRange();
 
-                    $('.done-js')
-                        .removeClass('done-successful')
-                        .addClass('done-error')
-                        .fadeIn(PROGRESS_COPY_ANIMATION_IN);
+                        range.selectNode(emailLink);
+                        window.getSelection().addRange(range);
+                        document.execCommand('copy');
+                        window.getSelection().removeAllRanges();
 
-                    setTimeout(function () {
-                        $('.done-js').fadeOut(PROGRESS_COPY_ANIMATION_OUT);
-                    }, PROGRESS_COPY_ANIMATION_DUR);
-                }
+                        $('.select').remove();
 
-            });
+                        $('.done-js')
+                            .removeClass('done-error')
+                            .addClass('done-successful')
+                            .fadeIn(PROGRESS_COPY_ANIMATION_IN);
+
+                        setTimeout(function () {
+                            $('.done-js').fadeOut(PROGRESS_COPY_ANIMATION_OUT);
+                        }, PROGRESS_COPY_ANIMATION_DUR);
+
+                    } catch (err) {
+
+                        $('.done-js')
+                            .removeClass('done-successful')
+                            .addClass('done-error')
+                            .fadeIn(PROGRESS_COPY_ANIMATION_IN);
+
+                        setTimeout(function () {
+                            $('.done-js').fadeOut(PROGRESS_COPY_ANIMATION_OUT);
+                        }, PROGRESS_COPY_ANIMATION_DUR);
+                    }
+
+                })
+
+                .on('mouseenter', '.thumb-js', function () {
+
+                    var favorites,
+                        i,
+                        src = $(this).find('img').attr('src');
+
+                    favorites = JSON.parse(localStorage.getItem('favorites'));
+
+                    if (favorites) {
+                        for (i = 0; i < favorites.length; i++) {
+                            if (favorites[i].src === src) {
+
+                                if ($(this).find('.js-favorite').hasClass('fa-star-o'))
+                                    $(this).find('.fa-star-o').removeClass('fa-star-o').addClass('fa-star')
+                            }
+                        }
+                    }
+                })
+
+                .on('click', '.fa-star-o', function (e) {
+                    e.stopPropagation();
+
+                    favorites.addItems($(this));
+
+                })
+
+                .on('click', '.fa-star', function (e) {
+
+                    e.stopPropagation();
+
+                    favorites.removeItem($(this))
+                })
+
+                .on('click', '.fa-plus-square-o', function (e) {
+                    e.stopPropagation();
+
+                    collections.buildUl($(this))
+
+                })
+
+                .on('click', '.fa-times', function (e) {
+                    e.stopPropagation();
+
+                    collections.removeItem($(this))
+
+                })
+
+                .on('click', '.li-col', function (e) {
+
+                    e.stopPropagation();
+
+                    collections.addItem($(this))
+
+                });
 
             $('.show-more-js').on('click', function () {
-
 
 
                 if ($(this).data('opened') === 'on') {
@@ -126,10 +194,10 @@ $(function () {
 
             $('.close-js').on('click', function () {
 
-                $('.start-js').empty();
-                lazy.gifCol = gifObj.items;
+                content.clearContainer($container);
 
-                lazy.count = 0;
+                lazy.changeContainer(gifObj.items, 0);
+
                 lazy.loadContent(options.amountLoadedItem);
 
                 $('.search-state-js').hide();
@@ -143,6 +211,7 @@ $(function () {
                     scrollTop: 0
                 }, SCROLL_ANIMATE_DURATION)
             });
+
         },
 
         _scrollEvents: function () {
@@ -160,11 +229,59 @@ $(function () {
                 }
 
             });
+        },
+
+        _menuEvents: function () {
+
+            $('.nav-icon').on('click', function () {
+
+                menu.toggleMenu($(this));
+
+                menu.buildMenu();
+
+            });
+
+            $('.menu')
+                .on('click', 'li', function (e) {
+                    e.stopPropagation();
+
+                    menu.autoClose();
+
+                })
+                .on('click', '.menu-collections-li', function () {
+                    var nameList = $(this).text();
+
+                    menu.showContentCollection(nameList);
+
+                })
+                .on('click', '.fa-plus-circle', function () {
+
+                    collections.popup();
+
+                })
+                .on('click', '.js-delete-list', function (e) {
+                    e.stopPropagation();
+
+                    var nameList = $(this).closest('.menu-collections-li').text();
+                    $(this).closest('.menu-collections-li').remove();
+
+                    collections.removeList(nameList)
+
+
+                });
+
+            $('.menu-favorites').on('click', function () {
+
+                favorites.showFavorites();
+            });
         }
+
+
 
     };
 
     initGifPicker.init();
+
 
 
 });

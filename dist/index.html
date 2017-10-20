@@ -32,16 +32,43 @@
 <body>
 
 <header>
-    <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="col">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
                 <div class="logo">
                     <h1>GIF Picker</h1>
                 </div>
             </div>
+
+
+
         </div>
     </div>
 </header>
+
+<nav class="menu">
+    <div class="nav-icon">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="menu-header">
+        <h2>menu</h2>
+    </div>
+
+    <ul class="menu-ul">
+
+        <li class="menu-favorites"><i class="fa fa-star" aria-hidden="true"></i>favorites</li>
+        <li class="menu-collections"><i class="fa fa-list" aria-hidden="true"></i>
+            <span>List Collections</span>
+            <i class="fa fa-plus-circle" aria-hidden="true"></i>
+            <ul class="menu-collections-ul">
+
+            </ul>
+        </li>
+
+    </ul>
+</nav>
 
 <section class="page page-js">
 
@@ -49,11 +76,12 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg">
+                <div class="col-lg-12">
                     <div class="most-popular most-popular-js">
 
                         <!--hashTags -->
                     </div>
+
                 </div>
                 <div class="col-lg-12">
                     <div class="show-more show-more-js" data-opened="off">
@@ -70,8 +98,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
-                    <p class="current-tag">shown by tag:
-                        <span class="search-tag search-tag-js">#reaction</span>
+                    <p class="current-tag">shown by:
+                        <span class="search-tag search-tag-js"></span>
                     </p>
                 </div>
                 <div class="col-6">

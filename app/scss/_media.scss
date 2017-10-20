@@ -18,6 +18,11 @@
       color: #fff;
     }
   }
+  header {
+    h1 {
+      text-align: left;
+    }
+  }
 }
 
 /* Medium Devices, Desktops */
@@ -35,30 +40,93 @@
 /* Small Devices, Tablets */
 @media only screen and (max-width: 768px) {
 
-  
-
   .line {
     margin-bottom: 60px;
   }
-  #page {
-    .col-md-9 {
-      text-align: center;
-    }
 
+  .page ul.all-tags {
+    padding: 10px 15px;
+    font-size: 0.6em;
+  }
+  .show-more {
+    margin: 15px 0;
+    padding: 0;
+    p {
+      font-size: .7em;
+      span {
+        &::after, &::before {
+          width: 25%;
+        }
+      }
+    }
   }
 }
-
-
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 480px) {
 
-  .page .hash .most-popular .popular li{
+  .page .hash .most-popular .popular li {
     font-size: 13px;
   }
+  .page .hash {
+    padding-top: 15px;
+  }
+
+  .page .hash .most-popular ul {
+    height: 23px;
+  }
+
   header {
     font-size: 0.8em;
     height: 45px;
+  }
+  .menu {
+    width: 300px;
+    right: -300px;
+  }
+  .menu .nav-icon {
+
+    top: 9px;
+    right: 310px;
+  }
+  .menu .menu-header {
+    height: 46px;
+    h2 {
+      padding-top: 0;
+    }
+  }
+  .page {
+    ul.all-tags {
+      padding: 10px 15px;
+      font-size: 0.6em;
+    }
+    .gif-container {
+      .thumb {
+        min-height: 40px;
+        line-height: 5px;
+        margin: 5px 5px 10px 5px;
+        position: relative;
+        animation: zoomIn .4s;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.36);
+
+        &:hover {
+          box-shadow: 0 0 6px 2px rgba(33, 148, 231, 0.61);
+          border: 2px solid #22a4ff;
+          ul {
+            background-color: rgba(3, 6, 17, 0.8);
+          }
+        }
+        ul {
+          bottom: 5px;
+        }
+        li {
+          box-sizing: border-box;
+          font-size: 0.63em;
+          padding: 0 10px 0 5px
+
+        }
+      }
+    }
   }
 }
 

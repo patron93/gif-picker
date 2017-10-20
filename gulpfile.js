@@ -32,7 +32,6 @@ gulp.task('main-js', function () {
 gulp.task('libs-js', function () {
     return gulp.src([
         'app/libs/jquery/dist/jquery.min.js',
-        'app/libs/mosaicflow/mosaicflow.js'
 
 
     ])

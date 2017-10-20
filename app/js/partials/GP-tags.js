@@ -35,30 +35,21 @@ var tags = (function () {
             $ul = $('.all-tags-js');
 
             for (i = 0; i < tagsArr.length; i++) {
-                $ul.append('<li>#' + tagsArr[i].name + '</li>')
+                $ul.append('<li class="js-tag-item">#' + tagsArr[i].name + '</li>')
             }
 
         },
 
         mostPopular: function () {
             var $ul,
-                widthTagsPanel,
-                widthTags,
                 i;
 
             $('.most-popular-js').append('<ul class="popular popular-js"></ul>');
             $ul = $('.popular-js');
-            widthTagsPanel = $ul.width();
-            widthTags = 0;
 
             for (i = 0; i < options.amountPopularTags; i++) {
-                if (widthTags > (widthTagsPanel)) break;
-                $ul.append('<li>#' + tagsArr[i].name + '</li>');
-                widthTags += ($ul.find('li').eq(i).outerWidth(true));
+                $ul.append('<li class="js-tag-item">#' + tagsArr[i].name + '</li>');
             }
-            $ul.find('li').last().remove();
-            $ul.find('li').last().remove();
-
         }
 
     }
